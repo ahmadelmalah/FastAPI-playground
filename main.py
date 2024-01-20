@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from auth.hash_password import HashPassword
+import sys
 
 app = FastAPI()
 
@@ -41,4 +42,5 @@ def post_db(item: str):
     return in_memory_db
 
 if __name__ == "__main__":
+    sys.dont_write_bytecode = True
     uvicorn.run("main:app", reload=True)
