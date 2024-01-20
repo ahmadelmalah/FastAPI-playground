@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from auth.hash_password import HashPassword
 
 app = FastAPI()
 
@@ -9,6 +10,16 @@ in_memory_db = []
 @app.get("/")
 def read_root():
     return "Root"
+
+@app.get("/password-hash")
+def read_test():
+    password = "test"
+    hashed_password = HashPassword().hash_password(password)
+    res = {}
+    res["password"] = password
+    res["hashed_password"] = hashed_password
+    res["verify_password"] = HashPassword().verify_password(password, hashed_password)
+    return res
 
 # Basic Auth with username and password
 @app.get("/auth")
